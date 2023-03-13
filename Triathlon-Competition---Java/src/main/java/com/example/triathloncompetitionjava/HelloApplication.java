@@ -1,5 +1,7 @@
 package com.example.triathloncompetitionjava;
 
+import Domain.Competitor;
+import Domain.Contest;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,6 +20,10 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        //launch();
+        Competitor competitor = new Competitor("Mircea", "Badea", 21, "running");
+        Contest contest = new Contest("running", "Istvan Kovacs");
+        System.out.println(contest.toString());
+        System.out.println(competitor.getId());
     }
 }
