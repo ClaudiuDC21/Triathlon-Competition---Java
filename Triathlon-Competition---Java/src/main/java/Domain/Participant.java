@@ -2,18 +2,16 @@ package Domain;
 
 import java.util.Objects;
 
-public class Competitor extends Entity<Integer> {
+public class Participant extends Entity<Integer> {
 
     String firstName;
     String lastName;
     int numberOfPoints;
-    String sport;
 
-    public Competitor(String firstName, String lastName, int numberOfPoints, String sport) {
+    public Participant(String firstName, String lastName, int numberOfPoints) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.numberOfPoints = numberOfPoints;
-        this.sport = sport;
     }
 
     public String getFirstName() {
@@ -40,39 +38,31 @@ public class Competitor extends Entity<Integer> {
         this.numberOfPoints = numberOfPoints;
     }
 
-    public String getSport() {
-        return sport;
-    }
-
-    public void setSport(String sport) {
-        this.sport = sport;
-    }
 
 
     @Override
     public int hashCode() {
-        return Objects.hash(getFirstName(),getLastName(),getNumberOfPoints(),getSport());
+        return Objects.hash(getFirstName(),getLastName(),getNumberOfPoints());
     }
 
     @Override
     public boolean equals(Object obj) {
         if(this == obj)
             return true;
-        if (!(obj instanceof Competitor))
+        if (!(obj instanceof Participant))
             return false;
-        Competitor competitor = (Competitor) obj;
-        return getFirstName().equals(competitor.getFirstName()) &&
-                getLastName().equals(competitor.getLastName()) &&
-                getSport().equals(competitor.getSport());
+        Participant participant = (Participant) obj;
+        return getFirstName().equals(participant.getFirstName()) &&
+                getLastName().equals(participant.getLastName()) ;
     }
 
     @Override
     public String toString() {
-        return "Competitor{" +
-                "firstName = " + firstName + '\'' +
-                "lastName = " + lastName + '\'' +
-                "numberOfPoints = " + numberOfPoints + '\'' +
-                "sport = " + sport +
+        return "Participant{" +
+                "id = " + id + '\'' +
+                ", firstName = " + firstName + '\'' +
+                ", lastName = " + lastName + '\'' +
+                ", numberOfPoints = " + numberOfPoints +
                 '}'
                 ;
     }

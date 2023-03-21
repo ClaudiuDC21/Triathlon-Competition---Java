@@ -9,7 +9,7 @@ import Exceptions.ValidationException;
  * @param <E> -  type of entities saved in repository
  */
 
-public interface Repository<ID, E extends Entity<ID>> {
+public interface IRepository<ID, E extends Entity<ID>> {
 
     /**
      *
@@ -44,12 +44,12 @@ public interface Repository<ID, E extends Entity<ID>> {
     /**
      *  removes the entity with the specified id
      * @param id
-     *      id must be not null
+     *      entity must be not null
      * @return the removed entity or null if there is no entity with the given id
      * @throws IllegalArgumentException
      *                   if the given id is null.
      */
-    E delete(ID id);
+    ID delete(ID id);
 
     /**
      *

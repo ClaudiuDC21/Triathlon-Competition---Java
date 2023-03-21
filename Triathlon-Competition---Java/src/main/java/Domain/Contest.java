@@ -4,33 +4,19 @@ import java.util.Objects;
 
 public class Contest extends Entity<Integer>{
 
-    String sport;
-    String referee;
+    private ContestType type;
+    private int points;
+    private int participantID;
 
-    public Contest(String sport, String referee) {
-        this.sport = sport;
-        this.referee = referee;
-    }
-
-    public String getSport() {
-        return sport;
-    }
-
-    public void setSport(String sport) {
-        this.sport = sport;
-    }
-
-    public String getReferee() {
-        return referee;
-    }
-
-    public void setReferee(String referee) {
-        this.referee = referee;
+    public Contest(ContestType type, int points, int participantID) {
+        this.type = type;
+        this.points = points;
+        this.participantID = participantID;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getReferee(),getSport());
+        return Objects.hash(getType(), getPoints(), getParticipantID());
     }
 
     @Override
@@ -40,16 +26,39 @@ public class Contest extends Entity<Integer>{
         if (!(obj instanceof Contest))
             return false;
         Contest that = (Contest) obj;
-        return getReferee().equals(that.getReferee()) &&
-                getSport().equals(that.getSport());
+        return getType().equals(that.getType());
     }
 
     @Override
     public String toString() {
         return "Contest{" +
-                "sport = " + sport + '\'' +
-                "referee = " + referee +
-                '}'
-                ;
+                "participantID = " + participantID + '\'' +
+                ", type = " + type +'\'' +
+                ". points = " + points + '\'' +
+                '}';
+    }
+
+    public ContestType getType() {
+        return type;
+    }
+
+    public void setType(ContestType type) {
+        this.type = type;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public int getParticipantID() {
+        return participantID;
+    }
+
+    public void setParticipantID(int participantID) {
+        this.participantID = participantID;
     }
 }
