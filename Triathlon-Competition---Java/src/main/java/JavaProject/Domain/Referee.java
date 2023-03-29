@@ -1,20 +1,27 @@
-package Domain;
+package JavaProject.Domain;
 
 import java.util.Objects;
 
 public class Referee extends Entity<Integer>{
     String firstName;
     String lastName;
-    ContestType type;
+    String type;
     String email;
     String password;
 
-    public Referee(String firstName, String lastName, ContestType type, String email, String password) {
+    public Referee(String firstName, String lastName, String type, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.type = type;
         this.email = email;
         this.password = password;
+    }
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
+    public String getFullNameReversed() {
+        return this.lastName + " " + this.lastName;
     }
 
 
@@ -75,11 +82,11 @@ public class Referee extends Entity<Integer>{
                 '}';
     }
 
-    public ContestType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(ContestType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

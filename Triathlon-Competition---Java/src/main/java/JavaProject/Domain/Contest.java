@@ -1,14 +1,14 @@
-package Domain;
+package JavaProject.Domain;
 
 import java.util.Objects;
 
 public class Contest extends Entity<Integer>{
 
-    private ContestType type;
+    private String type;
     private int points;
     private int participantID;
 
-    public Contest(ContestType type, int points, int participantID) {
+    public Contest(String type, int points, int participantID) {
         this.type = type;
         this.points = points;
         this.participantID = participantID;
@@ -38,11 +38,11 @@ public class Contest extends Entity<Integer>{
                 '}';
     }
 
-    public ContestType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(ContestType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

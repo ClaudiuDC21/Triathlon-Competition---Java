@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="Triathlon-Competition---Java.Triathlon-Competition---Java.main~1" target="17" />
-      <module name="Triathlon-Competition---Java.Triathlon-Competition---Java.test~1" target="17" />
+      <module name="Triathlon-Competition---Java.Triathlon-Competition---Java.main" target="11" />
+      <module name="Triathlon-Competition---Java.Triathlon-Competition---Java.test" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

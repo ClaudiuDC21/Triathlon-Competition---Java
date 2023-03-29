@@ -1,7 +1,7 @@
-package Repository;
+package JavaProject.Repository;
 
-import Domain.Entity;
-import Exceptions.ValidationException;
+import JavaProject.Domain.Entity;
+import JavaProject.Exceptions.ValidationException;
 
 /**
  * CRUD operations repository interface
@@ -54,7 +54,7 @@ public interface IRepository<ID, E extends Entity<ID>> {
     /**
      *
      * @param entity
-     *          entity must not be null
+     *          id must not be null
      * @return null - if the entity is updated,
      *                otherwise  returns the entity  - (e.g id does not exist).
      * @throws IllegalArgumentException

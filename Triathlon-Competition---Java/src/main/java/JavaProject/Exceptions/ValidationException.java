@@ -1,4 +1,4 @@
-package Exceptions;
+package JavaProject.Exceptions;
 
 public class ValidationException extends RuntimeException {
     public ValidationException() {

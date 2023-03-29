@@ -1,10 +1,8 @@
-package Repository.DatabaseRepo;
+package JavaProject.Repository.DatabaseRepo;
 
-import Domain.ContestType;
-import Domain.Participant;
-import Domain.Referee;
-import Repository.IRefereeRepository;
-import Utils.JDBCUtils;
+import JavaProject.Domain.Referee;
+import JavaProject.Repository.IRefereeRepository;
+import JavaProject.Utils.JDBCUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,10 +37,10 @@ public class RefereeDBRepository implements IRefereeRepository {
                     int id = resultSet.getInt("id");
                     String firstName = resultSet.getString("firstName");
                     String lastName = resultSet.getString("lastName");
-                    int type = resultSet.getInt("type");
+                    String type = resultSet.getString("type");
                     String email = resultSet.getString("email");
                     String password = resultSet.getString("password");
-                    referee = new Referee(firstName, lastName, ContestType.fromValue(type), email, password);
+                    referee = new Referee(firstName, lastName, type, email, password);
                     referee.setId(id);
                 }
                 logger.traceExit("Found 1 instance");
@@ -67,10 +65,10 @@ public class RefereeDBRepository implements IRefereeRepository {
                     int id = resultSet.getInt("id");
                     String firstName = resultSet.getString("firstName");
                     String lastName = resultSet.getString("lastName");
-                    int type = resultSet.getInt("type");
+                    String type = resultSet.getString("type");
                     String email = resultSet.getString("email");
                     String password = resultSet.getString("password");
-                    Referee referee = new Referee(firstName, lastName, ContestType.fromValue(type), email, password);
+                    Referee referee = new Referee(firstName, lastName, type, email, password);
                     referee.setId(id);
                     referees.add(referee);
                 }
@@ -90,7 +88,7 @@ public class RefereeDBRepository implements IRefereeRepository {
         try (PreparedStatement preparedStatement = connection.prepareStatement("insert into referees (firstName, lastName, type, email, password) values (?, ?, ?, ?, ?)")) {
             preparedStatement.setString(1, entity.getFirstName());
             preparedStatement.setString(2, entity.getLastName());
-            preparedStatement.setInt(3, entity.getType().getValue());
+            preparedStatement.setString(3, entity.getType());
             preparedStatement.setString(4, entity.getEmail());
             preparedStatement.setString(5, entity.getPassword());
             int result = preparedStatement.executeUpdate();
@@ -125,7 +123,7 @@ public class RefereeDBRepository implements IRefereeRepository {
         try (PreparedStatement preparedStatement = connection.prepareStatement("update referees set firstName=?, lastName=?, type=?, email=?, password=? where id=?")) {
             preparedStatement.setString(1, entity.getFirstName());
             preparedStatement.setString(2, entity.getLastName());
-            preparedStatement.setInt(3, entity.getType().getValue());
+            preparedStatement.setString(3, entity.getType());
             preparedStatement.setString(4, entity.getEmail());
             preparedStatement.setString(5, entity.getPassword());
             preparedStatement.setInt(6, entity.getId());
@@ -136,6 +134,39 @@ public class RefereeDBRepository implements IRefereeRepository {
         }
         logger.traceExit();
         return entity;
+    }
+
+    private Referee buildRefereeFromResultSet(ResultSet resultSet) throws SQLException {
+        Referee referee = null;
+        var id = resultSet.getInt("id");
+        var firstName = resultSet.getString("firstName");
+        var lastName = resultSet.getString("lastName");
+        var type = resultSet.getString("type");
+        var email = resultSet.getString("email");
+        var password = resultSet.getString("password");
+        referee = new Referee(firstName, lastName, type, email, password);
+        referee.setId(id);
+        return referee;
+    }
+
+    @Override
+    public Referee findByEmail(String email) {
+        logger.traceEntry("Finding task {}", email);
+        Connection connection = databaseUtils.getConnection();
+        Referee referee = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from referees where email=?")) {
+            preparedStatement.setString(1, email);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    referee = buildRefereeFromResultSet(resultSet);
+                }
+                logger.traceExit("Found 1 instance");
+            }
+        } catch (SQLException ex) {
+            logger.error(ex);
+        }
+        logger.traceExit();
+        return referee;
     }
 }
 

@@ -1,8 +1,9 @@
-package Domain;
+package JavaProject.Domain;
 
+import java.util.Comparator;
 import java.util.Objects;
 
-public class Participant extends Entity<Integer> {
+public class Participant extends Entity<Integer> implements Comparator<Participant> {
 
     String firstName;
     String lastName;
@@ -38,11 +39,23 @@ public class Participant extends Entity<Integer> {
         this.numberOfPoints = numberOfPoints;
     }
 
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
+    public String getFullNameReversed() {
+        return this.lastName + " " + this.lastName;
+    }
 
 
     @Override
     public int hashCode() {
         return Objects.hash(getFirstName(),getLastName(),getNumberOfPoints());
+    }
+
+    @Override
+    public int compare(Participant o1, Participant o2) {
+        return o1.lastName.compareTo(o2.lastName);
     }
 
     @Override

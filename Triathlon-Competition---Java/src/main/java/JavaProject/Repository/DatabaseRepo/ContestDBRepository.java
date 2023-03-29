@@ -1,9 +1,8 @@
-package Repository.DatabaseRepo;
+package JavaProject.Repository.DatabaseRepo;
 
-import Domain.ContestType;
-import Domain.Contest;
-import Repository.IContestRepository;
-import Utils.JDBCUtils;
+import JavaProject.Domain.Contest;
+import JavaProject.Repository.IContestRepository;
+import JavaProject.Utils.JDBCUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,10 +35,10 @@ public class ContestDBRepository implements IContestRepository {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     int id = resultSet.getInt("id");
-                    int type = resultSet.getInt("type");
+                    String type = resultSet.getString("type");
                     int points = resultSet.getInt("points");
                     int participantID = resultSet.getInt("participantID");
-                    referee = new Contest(ContestType.fromValue(type), points, participantID);
+                    referee = new Contest(type, points, participantID);
                     referee.setId(id);
                 }
                 logger.traceExit("Found 1 instance");
@@ -63,10 +62,10 @@ public class ContestDBRepository implements IContestRepository {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     int id = resultSet.getInt("id");
-                    int type = resultSet.getInt("type");
+                    String type = resultSet.getString("type");
                     int points = resultSet.getInt("points");
                     int participantID = resultSet.getInt("participantID");
-                    Contest contest1 = new Contest(ContestType.fromValue(type), points, participantID);
+                    Contest contest1 = new Contest(type, points, participantID);
                     contest1.setId(id);
                     contest.add(contest1);
                 }
@@ -84,7 +83,7 @@ public class ContestDBRepository implements IContestRepository {
         logger.traceEntry("Saving task {}", entity);
         Connection connection = databaseUtils.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement("insert into contest ( type, points, participantID) values ( ?, ?, ?)")) {
-            preparedStatement.setInt(1, entity.getType().getValue());
+            preparedStatement.setString(1, entity.getType());
             preparedStatement.setInt(2, entity.getPoints());
             preparedStatement.setInt(3, entity.getParticipantID());
             int result = preparedStatement.executeUpdate();
@@ -117,7 +116,7 @@ public class ContestDBRepository implements IContestRepository {
         logger.traceEntry("Updating task {}", entity);
         Connection connection = databaseUtils.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement("update contest set type=?, points=?, participantID=? where id=?")) {
-            preparedStatement.setInt(1, entity.getId());
+            preparedStatement.setString(1, entity.getType());
             preparedStatement.setInt(2, entity.getPoints());
             preparedStatement.setInt(3, entity.getParticipantID());
             preparedStatement.setInt(4, entity.getId());
@@ -128,5 +127,56 @@ public class ContestDBRepository implements IContestRepository {
         }
         logger.traceExit();
         return entity;
+    }
+
+    @Override
+    public Contest findByParticipantID(Integer integer) {
+        logger.traceEntry();
+        Connection connection = databaseUtils.getConnection();
+        Contest contest = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from contest where participantID=?")) {
+            preparedStatement.setInt(1, integer);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    var id = resultSet.getInt("id");
+                    var type = resultSet.getString("type");
+                    var points = resultSet.getInt("points");
+                    var participantID = resultSet.getInt("participantID");
+                    contest = new Contest(type,points,participantID);
+                    contest.setId(id);
+                }
+                logger.traceExit("Found 1 instance");
+            }
+        } catch (SQLException ex) {
+            logger.error(ex);
+        }
+        logger.traceExit();
+        return contest;
+    }
+
+    @Override
+    public Iterable<Contest> findAllWithPoints() {
+        logger.traceEntry("Finding task");
+        Connection connection = databaseUtils.getConnection();
+        List<Contest> contests = new ArrayList<>();
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select * from contest  where points > 0")) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    var id = resultSet.getInt("id");
+                    var type = resultSet.getString("type");
+                    var points = resultSet.getInt("points");
+                    var participantID = resultSet.getInt("participantID");
+                    Contest contest = new Contest(type,points,participantID);
+                    contest.setId(id);
+                    contests.add(contest);
+
+                }
+                logger.traceExit("Found {} instances", contests.size());
+            }
+        } catch (SQLException ex) {
+            logger.error(ex);
+        }
+        logger.traceExit();
+        return contests;
     }
 }

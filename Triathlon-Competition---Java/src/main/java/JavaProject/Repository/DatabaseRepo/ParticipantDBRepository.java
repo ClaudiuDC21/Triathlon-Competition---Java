@@ -1,8 +1,8 @@
-package Repository.DatabaseRepo;
+package JavaProject.Repository.DatabaseRepo;
 
-import Domain.Participant;
-import Repository.IParticipantRepository;
-import Utils.JDBCUtils;
+import JavaProject.Domain.Participant;
+import JavaProject.Repository.IParticipantRepository;
+import JavaProject.Utils.JDBCUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

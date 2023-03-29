@@ -1,6 +1,6 @@
-package Domain.Validators;
+package JavaProject.Domain.Validators;
 
-import Exceptions.ValidationException;
+import JavaProject.Exceptions.ValidationException;
 
 public interface Validator<T> {
     void validate(T entity) throws ValidationException;
